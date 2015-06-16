@@ -1,0 +1,21 @@
+body {
+  background-color: #C0C0C0;
+}
+
+#mainContainer {
+  margin-left:20px;
+}
+
+.mainContainer {
+  background-color: white;
+  padding-bottom: 10px;
+}
+
+.patientBox {
+  margin-top:5px;
+  margin-left: 5px;
+  height: 350px;
+  width: 350px;
+  border-style: solid;
+  border-width:1px;
+}
