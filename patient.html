@@ -4,9 +4,12 @@
     <script src="./bower_components/react/react.js"></script>
     <script src="./bower_components/react/JSXTransformer.js"></script>
     <script src="./bower_components/react-bootstrap/react-bootstrap.min.js"></script>
+    <script src="./bower_components/d3/d3.min.js"></script>
     <!--<link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <link href="./bower_components/bootstrap-theme-cosmo/cosmo.min.css" rel="stylesheet">
     <link href="./bower_components/patient.css" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
     <nav class="navbar navbar-default">
@@ -45,33 +48,110 @@
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
-    <div id='mainContainer'>
-        <div id='left' class='col-md-8 patientBox'>
-          a
+
+
+    <div id='mainContainer'class="container-fluid" >
+      <div id='graphArea' class='col-lg-8 graphBox'>
+        <div class="panel panel-default graph-panel">
+          <div class="panel-body">
+            <div class="pull-left">
+              TOP GRAPH
+            </div>
+            <div class="pull-right">
+              <div class="well well-lg number-well">
+                00
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div id='right' class='col-md-4 patientBox'>
-          <div id='rightTop' class='row'>
-            <div class="panel panel-success">
-              <div class="panel-heading">
-                <h3 class="panel-title">All Fine Panel</h3>
-              </div>
-              <div class="panel-body">
-                rt
-              </div>
+        <div class="panel panel-default graph-panel">
+          <div class="panel-body">
+            <div class="pull-left">
+              SECOND GRAPH
             </div>
-          </div>
-          <div id='rightBottom' class='row'>
-            <div class="panel panel-danger">
-              <div class="panel-heading">
-                <h3 class="panel-title">Danger Panel</h3>
-              </div>
-              <div class="panel-body">
-                rb
+            <div class="pull-right">
+              <div class="well well-lg number-well">
+                00
               </div>
             </div>
           </div>
         </div>
+
+        <div class="panel panel-default graph-panel">
+          <div class="panel-body">
+            <div class="pull-left">
+              THIRD GRAPH
+            </div>
+            <div class="pull-right">
+              <div class="well well-lg number-well">
+                00
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default graph-panel">
+          <div class="panel-body">
+            <div class="pull-left">
+              BOTTOM GRAPH
+            </div>
+            <div class="pull-right">
+              <div class="well well-lg number-well">
+                00
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id='infoArea' class='col-lg-4 infoBox'>
+        <div id='rightTop' class='row'>
+          <div class="panel info-panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">All Fine Panel</h3>
+            </div>
+            <div class="panel-body">
+              <div class="pull-left">
+                <a href="#" class="thumbnail">
+                  <img src="..." alt="Patient Image Here">
+                </a>
+              </div>
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <td>Age</td>
+                    <td>34</td>
+                  </tr>
+                    <td>Bed</td>
+                    <td>104a</td>
+                  </tr>
+                  </tr>
+                    <td>Status</td>
+                    <td>Critical</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id='rightBottom' class='row'>
+          <div class="panel info-panel panel-danger">
+            <div class="panel-heading">
+              <h3 class="panel-title">Danger Panel</h3>
+            </div>
+            <div class="panel-body">
+              <ul class="list-group">
+                <li class="list-group-item">Clinical Data</li>
+                <li class="list-group-item">Lab Tests</li>
+                <li class="list-group-item">Medications</li>
+                <li class="list-group-item">Progress Notes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
