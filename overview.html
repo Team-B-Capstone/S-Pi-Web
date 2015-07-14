@@ -11,7 +11,6 @@
         <script src="./bower_components/smoothie/smoothie.js"></script>
         <script src="./smoothie_graphs/overview_graphs.js"></script>
         <script src="./s-pi.js"></script>
-        <script src="./alert.js"></script>
         <link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="./bower_components/bootstrap-theme-cosmo/cosmo.min.css" rel="stylesheet">
         <link href="./overview.css" rel="stylesheet">
@@ -73,12 +72,6 @@
                                 </div>
                                 <div class="col-xs-6 col-sm-7 tab">
                                     <table class='table table-striped table-condensed table-hover table-bordered'>
-                                        <!--       <thead>
-                                            <tr>
-                                            <th>Item</th>
-                                            <th>Detail</th>
-                                            </tr>
-                                            </thead>     -->
                                             <tbody>
                                                 <tr>
                                                     <td>Bed</td>
@@ -105,7 +98,7 @@
                                 <div id="content1">
                                     <div class="demo-container">
                                       <div id="patient1" class="demo-placeholder">
-                                        <canvas class="smoothie-chart" id='chart1' ></canvas>
+                                        <canvas class="smoothie-chart" id='chart1' height="50px" width="450px" ></canvas>
                                       </div>
                                     </div>
                                 </div>
@@ -123,12 +116,6 @@
                                 </div>
                                 <div class="col-xs-6 col-sm-7 tab">
                                     <table class='table table-striped table-condensed table-hover table-bordered'>
-                                        <!--           <thead>
-                                            <tr>
-                                            <th>Item</th>
-                                            <th>Detail</th>
-                                            </tr>
-                                            </thead>   -->
                                             <tbody>
                                                 <tr>
                                                     <td>Bed</td>
@@ -154,7 +141,7 @@
                               <div id="content2">
                                   <div class="demo-container">
                                     <div id="patient2" class="demo-placeholder">
-                                      <canvas class="smoothie-chart" id='chart2'></canvas>
+                                      <canvas class="smoothie-chart" id='chart2' height="50px" width="450px" ></canvas>
                                   </div>
                                 </div>
                               </div>
@@ -178,12 +165,6 @@
                                 </div>
                                 <div class="col-xs-6 col-sm-7 tab">
                                     <table class='table table-striped table-condensed table-hover table-bordered'>
-                                        <!--           <thead>
-                                            <tr>
-                                            <th>Item</th>
-                                            <th>Detail</th>
-                                            </tr>
-                                            </thead>  -->
                                             <tbody>
                                                 <tr>
                                                     <td>Bed</td>
@@ -209,7 +190,7 @@
                                 <div id="content3">
                                     <div class="demo-container">
                                       <div id="patient3" class="demo-placeholder">
-                                        <canvas class="smoothie-chart" id='chart3'></canvas>
+                                        <canvas class="smoothie-chart" id='chart3' height="50px" width="450px" ></canvas>
                                       </div>
                                     </div>
                                 </div>
@@ -227,12 +208,6 @@
                                 </div>
                                 <div class="col-xs-6 col-sm-7 tab">
                                     <table class='table table-striped table-condensed table-hover table-bordered'>
-                                        <!--    <thead>
-                                            <tr>
-                                            <th>Item</th>
-                                            <th>Detail</th>
-                                            </tr>
-                                            </thead>   -->
                                             <tbody>
                                                 <tr>
                                                     <td>Bed</td>
@@ -258,7 +233,7 @@
                               <div id="content4">
                                 <div class="demo-container">
                                   <div id="patient4" class="demo-placeholder">
-                                    <canvas class="smoothie-chart" id='chart4'></canvas>
+                                    <canvas class="smoothie-chart" id='chart4' height="50px" width="450px" ></canvas>
                                   </div>
                                 </div>
                               </div>                      
@@ -315,45 +290,9 @@
                         <div class="modal-title alert alert-warning" role="alert">ALERT</div>
                     </div>
                     <div class="modal-body">
-                        <div class="panel panel-default">
+                        <div id="alert_table" class="panel panel-default">
                               <!-- Default panel contents -->
-                             <div class="panel-heading">Alert: Mr. Patient - High Heart Rate at 11:34PM</div>
-                             <div id="alert_table" class="panel-body">
-                             </div>
-                                 <!-- Table
-                                     is currently being loaded by the javaScript 
-                                     <table class="table">
-                                     <tr>
-                                          <tr>
-                                               <td><b>Name:</b> </td>
-                                               <td>Mr. Patient</td>
-                                           </tr>
-                                           <tr>
-                                               <td><b>Age:</b> </td>
-                                               <td>27</td>
-                                          </tr>
-                                          <tr>
-                                             <td><b>Bed:</b>  </td>
-                                             <td>243</td>
-                                         </tr>
-                                         <tr>
-                                             <td><b>Code:</b>  </td>
-                                             <td>23A</td>
-                                         </tr>
-                                         <tr>
-                                             <td><b>Status:</b>  </td>
-                                             <td>Active Warning</td>
-                                         </tr>
-                                         <tr>
-                                             <td><b>Alert Length:</b>  </td>
-                                             <td>162 seconds</td>
-                                         </tr>
-                                         <tr>
-                                             <td><b>Maximum Heart Rate:</b>  </td>
-                                             <td>155 BPM</td>
-                                         </tr>
-                              </table> -->
-                        </div>
+                           </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -367,41 +306,17 @@
         var eb = new vertx.EventBus("http://api.s-pi-demo.com/streambus");
         jQuery(function($) {
             ecg_graph(eb);
-            $("#alert_table").html("\
-                  <table class='table'>\
-                     <tr>\
-                        <tr>\
-                           <td><b>Name:</b> </td>\
-                           <td>Mr. Patient</td>\
-                        </tr>\
-                        <tr>\
-                           <td><b>Age:</b> </td>\
-                           <td>27</td>\
-                        </tr>\
-                        <tr>\
-                           <td><b>Bed:</b>  </td>\
-                           <td>243</td>\
-                        </tr>\
-                        <tr>\
-                           <td><b>Code:</b>  </td>\
-                           <td>23A</td>\
-                        </tr>\
-                        <tr>\
-                           <td><b>Status:</b>  </td>\
-                           <td>Active Warning</td>\
-                        </tr>\
-                        <tr>\
-                           <td><b>Alert Length:</b>  </td>\
-                           <td>162 seconds</td>\
-                        </tr>\
-                        <tr>\
-                           <td><b>Maximum Heart Rate:</b>  </td>\
-                           <td>155 BPM</td>\
-                        </tr>\
-                    </table>\
-                 ");
-        });
-      </script>
+                    });
+
+     </script>      
+<!--
+        var timer;
+        window.onresize = function () {
+            clearTimeout(timer);
+            timer = setTimeout(handleResize, 100);
+        };
+-->
+      
 <!--
     <script type="text/javascript">
         jQuery(function($) {
