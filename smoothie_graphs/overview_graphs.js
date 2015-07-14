@@ -93,20 +93,19 @@ function ecg_graph(eb) {
         this.alert_msg = msg.alert_msg;
         this.action_msg = msg.action_msg;
         this.alert_status = "Active Warning";
-        this.alert_time = msg.ts;
+        this.alert_time = new Date(msg.ts);
         this.id = msg.patient_id;
         this.interval = msg.interval;
         this.signame = msg.signame;
         
         $.getJSON('/patients.json', function(data) {
-            self.name = data['patients'][(self.id-  1)]['name'];
-            self.age =  data['patients'][(self.id - 1)]['age'];
-            self.bed =  data['patients'][(self.id - 1)]['bed'];
+            self.name = data['patients'][(self.id)]['name'];
+            self.age =  data['patients'][(self.id)]['age'];
+            self.bed =  data['patients'][(self.id)]['bed'];
         });
         
-        console.log(this.name);
         $("#alert_table").html("\
-               <div class='panel-heading'> Alert:  " + this.name + " -  " + this.alert_msg + " at "+ this.alert_time +" PM </div>\
+               <div class='panel-heading'> Alert:  " + this.name + " -  " + this.alert_msg + " at "+ this.alert_time +"  </div>\
                  <div  class='panel-body'>\
                   <table class='table'>\
                      <tr>\
