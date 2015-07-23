@@ -7,10 +7,10 @@ var graphOff = 0;
 function detail_graphs(eb) {
   var currentBuffers = {};
   var neededGraphs = [];
-  neededGraphs.push(['waveform', 'bp', 1]);
-  neededGraphs.push(['waveform', 'bp', 2]);
-  neededGraphs.push(['waveform', 'bp', 3]);
-  neededGraphs.push(['waveform', 'bp', 4]);
+  neededGraphs.push(['waveform', 'ABP', 1]);
+  neededGraphs.push(['waveform', 'PAP', 2]);
+  neededGraphs.push(['waveform', 'RESP', 3]);
+  neededGraphs.push(['waveform', 'ECG', 4]);
 
   console.log("hi");
   console.log(neededGraphs);

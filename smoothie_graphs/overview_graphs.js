@@ -6,10 +6,10 @@ function ecg_graph(eb) {
     var currentBuffers = {};
     var neededGraphs = [];
     var counter = 0;
-    neededGraphs.push(['waveform', 'bp', 1]);
-    neededGraphs.push(['waveform', 'bp', 2]);
-    neededGraphs.push(['waveform', 'bp', 3]);
-    neededGraphs.push(['waveform', 'bp', 4]);
+    neededGraphs.push(['waveform', 'ABP', 1]);
+    neededGraphs.push(['waveform', 'ABP', 2]);
+    neededGraphs.push(['waveform', 'ABP', 3]);
+    neededGraphs.push(['waveform', 'ABP', 4]);
     var graphOff = 0;
     var alertOff = 0;
     var chartArray = [];
@@ -162,16 +162,16 @@ function ecg_graph(eb) {
                     </table>\
                 </div>\
             ");
-            if (alertOff == 0) {
-               $('#alertModal').modal('show');
-            }
+             $('#alertModal').modal('show');
         }
 
         $.getJSON('/patients.json', function(data) {
             Alert.name = data['patients'][(Alert.id)]['name'];
             Alert.age =  data['patients'][(Alert.id)]['age'];
             Alert.bed =  data['patients'][(Alert.id)]['bed'];
-            render_alert();
+            if (alertOff == 0) {
+               render_alert();
+            }
 
             counter = counter +1;
 
