@@ -4,9 +4,10 @@
 var currentGraphs = [];
 var graphOff = 0;
 var patient_id;
+// Counter for alerts 'rendered'.
 var count_alert = ( function() {
     var alertcount = 0;
-    return function() {return alertcount += 1;}
+    return function() {return alertcount += 1;};
 })();
 
 function detail_graphs(eb) {
@@ -38,7 +39,6 @@ function detail_graphs(eb) {
             alert('Graphs have been turned ON');
         }
     });
-
 
     var startGraph = function (stream, type, id) {
         $.when($.ajax('http://api.s-pi-demo.com/stream/'+stream+'/'+type+'/'+ patient_id)).done(
@@ -99,6 +99,7 @@ function detail_graphs(eb) {
                 // array.data.forEach(makeAlert);
             });
     }
+
     function make_alert(msg) {
         console.log('in makeAlert');
         var Alert = {};
@@ -110,7 +111,7 @@ function detail_graphs(eb) {
         Alert.interval = msg.interval; //INTERVAL;
         Alert.signame = msg.signame; //SIGNAME;
 
-
+        // Replace with server info or remove if not needed.
         $.getJSON('/patients.json', function(data) {
             Alert.name = data['patients'][(Alert.id)]['name'];
             Alert.age =  data['patients'][(Alert.id)]['age'];
@@ -118,6 +119,7 @@ function detail_graphs(eb) {
             render_alert();
 
         });
+        
         function render_alert(){
             console.log('in render_alert');
             $('#alertPanel').removeClass('panel-success').addClass('panel-danger');
@@ -126,14 +128,20 @@ function detail_graphs(eb) {
         }
     }
 }
+
+// Calls the smoothie.js resize function after assigning the parent's width
+// to the canvas. This matches graph size to it's container for responsiveness.
+// Optional argument:
+// Providing a graphs index number will run resize only on that graph.
+// Omitting the argument will run resize against all currentGraphs.
 var handleResize = function (graph_id) {
     var mycanvas;
     if (graph_id === undefined) {
-        for (var i = 0; i < currentGraphs.length; i++) {
-            mycanvas = currentGraphs[i].chart.canvas;
+        currentGraphs.forEach(function(graph){
+            mycanvas = graph.chart.canvas;
             mycanvas.width = mycanvas.parentNode.offsetWidth;
-            currentGraphs[i].chart.resize();
-        }
+            graph.chart.resize();
+        });
     } else {
         console.log('in resize graph: ' + graph_id);
         mycanvas = currentGraphs[graph_id].chart.canvas;
