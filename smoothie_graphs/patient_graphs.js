@@ -19,27 +19,16 @@ function detail_graphs(eb) {
     neededGraphs.push(['waveform', 'PAP', 3]);
     neededGraphs.push(['waveform', 'RESP', 4]);
 
-    $("#graphs").click(function() {
-        var egraph = document.getElementById("graphs");
-        var i = currentGraphs.length-1;
-        if (graphOff === 0) {
-            for (; i >= 0; i--) {
-                currentGraphs[i].chart.stop();
-            }
-            graphOff = 1;
-            egraph.innerHTML = "Turn Graphs ON";
-            alert('Graphs have been turned OFF');
-        }
-        else {
-            for (; i >= 0; i--) {
-                currentGraphs[i].chart.start();
-            }
-            graphOff = 0;
-            egraph.innerHTML = "Turn Graphs OFF";
-            alert('Graphs have been turned ON');
-        }
-    });
+    eb.onopen = function () {
+        neededGraphs.forEach(function(element){
+            startGraph(element[0], element[1], element[2]);
+        });
+        var graph_interval = setInterval(drawIt, 1000);
 
+        $.when($.ajax("http://api.s-pi-demo.com/alerts/" + patient_id )).done(get_alert);
+    };
+
+    // Retrieve stream bus??
     var startGraph = function (stream, type, id) {
         $.when($.ajax('http://api.s-pi-demo.com/stream/'+stream+'/'+type+'/'+ patient_id)).done(
             function (data) {
@@ -81,23 +70,36 @@ function detail_graphs(eb) {
         });
     };
 
-    eb.onopen = function () {
-        neededGraphs.forEach(function(element){
-            startGraph(element[0], element[1], element[2]);
-        });
-        var graph_interval = setInterval(drawIt, 1000);
-
-        $.when($.ajax("http://api.s-pi-demo.com/alerts/" + patient_id )).done(get_alert);
-    };
+    // Stop graphs on click in the options menu
+    $("#graphs").click(function() {
+        var egraph = document.getElementById("graphs");
+        var i = currentGraphs.length-1;
+        if (graphOff === 0) {
+            for (; i >= 0; i--) {
+                currentGraphs[i].chart.stop();
+            }
+            graphOff = 1;
+            egraph.innerHTML = "Turn Graphs ON";
+            alert('Graphs have been turned OFF');
+        }
+        else {
+            for (; i >= 0; i--) {
+                currentGraphs[i].chart.start();
+            }
+            graphOff = 0;
+            egraph.innerHTML = "Turn Graphs OFF";
+            alert('Graphs have been turned ON');
+        }
+    });
 
     function get_alert(dat1, dat2, dat3) {
-            console.log('dat1: ' + dat1 + ' dat2: ' + dat2 + ' dat3: ' + dat3);
-            eb.registerHandler(dat1, function(msg) {
-                // temporary to test against debug mode data
-                make_alert(msg);
-                // Test this against live data
-                // array.data.forEach(makeAlert);
-            });
+        console.log('dat1: ' + dat1 + ' dat2: ' + dat2 + ' dat3: ' + dat3);
+        eb.registerHandler(dat1, function(msg) {
+            // temporary to test against debug mode data
+            make_alert(msg);
+            // Test this against live data
+            // array.data.forEach(makeAlert);
+        });
     }
 
     function make_alert(msg) {
@@ -119,7 +121,7 @@ function detail_graphs(eb) {
             render_alert();
 
         });
-        
+
         function render_alert(){
             console.log('in render_alert');
             $('#alertPanel').removeClass('panel-success').addClass('panel-danger');
