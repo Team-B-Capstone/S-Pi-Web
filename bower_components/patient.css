@@ -67,6 +67,10 @@ body {
   height: 100%;
 }
 
+.info-panel-body {
+  padding-bottom: 0;
+}
+
 .info-title {
   min-height: 19px;
 }
@@ -86,9 +90,20 @@ body {
 }
 
 .clinical-row {
-  height: 229px;
+  height: 244px;
 }
+
+.clinical-list-group {
+  margin-bottom: 0px;
+}
+
 .list-group-item {
   padding-bottom: 5px;
   font-size: 150%;
+}
+.list-group-alert-item {
+  line-height: 26px;
+  margin-bottom: -1px;
+  padding-bottom: 14px;
+  font-size: 100%;
 }

@@ -121,7 +121,8 @@ function detail_graphs(eb) {
         function render_alert(){
             console.log('in render_alert');
             $('#alertPanel').removeClass('panel-success').addClass('panel-danger');
-            $('#alertPanelTitle').text(count_alert() + ' Alerts');
+            $('#alertPanelTitle').text(count_alert() + ' Alerts!');
+            $('#alert_message_row').text('Last Alert Msg: ' + Alert.alert_msg);
         }
     }
 }
