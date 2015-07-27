@@ -142,11 +142,11 @@
       <!-- Right hand area for patient info, picture and clinical data -->
       <div id='infoArea' class='col-md-4 infoBox'>
         <div class="jumbotron infoJumbotron">
-          <div class="panel info-panel panel-success">
+          <div id='alertPanel' class="panel info-panel panel-success">
             <div class="panel-heading">
-              <h3 class="panel-title info-title"> </h3>
+              <h2  id='alertPanelTitle'class="panel-title info-title"> No Alerts</h2>
             </div>
-            <div class="panel-body">
+            <div class="panel-body info-panel-body">
               <div id='top' class="row">
                 <div class="col-sm-6 col-md-5 pic-column">
                   <a href="#" class="thumbnail">
@@ -174,12 +174,13 @@
                 </div>
               </div>
               <div class="row clinical-row">
-                <ul class="list-group">
+                <div class="list-group clinical-list-group">
                   <a href="#" class="list-group-item" data-toggle="modal" data-target="#dataModal">Clinical Data</a>
                   <a href="#" class="list-group-item" data-toggle="modal" data-target="#labsModal">Lab Data</a>
                   <a href="#" class="list-group-item" data-toggle="modal" data-target="#medsModal">Medications</a>
                   <a href="#" class="list-group-item" data-toggle="modal" data-target="#progressModal">Progress Notes</a>
-                </ul>
+                  <li class="list-group-alert-item list-group-item" id="alert_message_row"> No Alert Messages</li>
+                </div>
               </div>
             </div>
           </div>

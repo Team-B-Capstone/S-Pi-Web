@@ -3,95 +3,151 @@
 // for the ecg graphs on the patient graphs.
 var currentGraphs = [];
 var graphOff = 0;
+var patient_id;
+// Counter for alerts 'rendered'.
+var count_alert = ( function() {
+    var alertcount = 0;
+    return function() {return alertcount += 1;};
+})();
 
 function detail_graphs(eb) {
-  var currentBuffers = {};
-  var neededGraphs = [];
-  neededGraphs.push(['waveform', 'bp', 1]);
-  neededGraphs.push(['waveform', 'bp', 2]);
-  neededGraphs.push(['waveform', 'bp', 3]);
-  neededGraphs.push(['waveform', 'bp', 4]);
+    var currentBuffers = {};
+    var neededGraphs = [];
+    patient_id  = window.location.hash.substring(1);
+    neededGraphs.push(['waveform', 'ECG', 1]);
+    neededGraphs.push(['waveform', 'ABP', 2]);
+    neededGraphs.push(['waveform', 'PAP', 3]);
+    neededGraphs.push(['waveform', 'RESP', 4]);
 
-  console.log("hi");
-  console.log(neededGraphs);
-
-$("#graphs").click(function() {
-  var egraph = document.getElementById("graphs");
-  if (graphOff == 0) {
-     for (var i = currentGraphs.length-1; i >= 0; i--) {
-        currentGraphs[i].chart.stop();
-     }
-     graphOff = 1;
-     egraph.innerHTML = "Turn Graphs ON";
-     alert('Graphs have been turned OFF');
-  }
-  else {
-     for (var i = currentGraphs.length-1; i >= 0; i--) {
-        currentGraphs[i].chart.start();
-     }
-     graphOff = 0;
-     egraph.innerHTML = "Turn Graphs OFF";
-     alert('Graphs have been turned ON');
-  }
-});
-
-
-  var startGraph = function (stream, type, id) {
-    $.when($.ajax('http://api.s-pi-demo.com/stream/'+stream+'/'+type+'/'+id)).done(
-      function (data) {
-        var channelName = data;
-        var startTime = Date.now();
-        currentBuffers[channelName] = new Array();
-        var chart = makeSmoothie('chart' + id);
-        currentGraphs.push({"channel": channelName,
-          "startTime": startTime,
-          "buffer": currentBuffers[channelName],
-          "graph": chart.series,
-          "chart": chart.chart});
-        eb.registerHandler(channelName, function(msg) {
-          currentBuffers[channelName].push(msg.data);
+    eb.onopen = function () {
+        neededGraphs.forEach(function(element){
+            startGraph(element[0], element[1], element[2]);
         });
-      }
-    )
-  };
+        var graph_interval = setInterval(drawIt, 1000);
 
-  var makeSmoothie = function (id) {
-    console.log("id" + id)
-    var chart = new SmoothieChart({millisPerPixel:8, strokeStyle:'green'});
-    var canvas = document.getElementById(id);
-    var series = new TimeSeries();
-    chart.addTimeSeries(series, {lineWidth:0.7,strokeStyle:'green'});
-    chart.streamTo(canvas, 1720);
-    return {"series": series, "chart": chart};
-  };
+        $.when($.ajax("http://api.s-pi-demo.com/alerts/" + patient_id )).done(get_alert);
+    };
 
-  var drawIt = function () {
-    currentGraphs.forEach(function (item, idx, thisArray) {
-      var data = item["buffer"].shift();
-      if (typeof data !== 'undefined') {
-        for (var i = data.length - 1; i >= 0; i--) {
-          item["graph"].append(item["startTime"], data[i].SIGNAL);
-          item["startTime"] += 8;
+    // Retrieve stream bus??
+    var startGraph = function (stream, type, id) {
+        $.when($.ajax('http://api.s-pi-demo.com/stream/'+stream+'/'+type+'/'+ patient_id)).done(
+            function (data) {
+                var channelName = data;
+                var startTime = Date.now();
+                currentBuffers[channelName] = new Array();
+                var chart = makeSmoothie('chart' + id);
+                currentGraphs.push({"channel": channelName,
+                "startTime": startTime,
+                "buffer": currentBuffers[channelName],
+                "graph": chart.series,
+                "chart": chart.chart});
+                eb.registerHandler(channelName, function(msg) {
+                    currentBuffers[channelName].push(msg.data);
+                });
+                handleResize(currentGraphs.length -1);
+            }
+        );
+    };
+
+    var makeSmoothie = function (id) {
+        var chart = new SmoothieChart({millisPerPixel:8, strokeStyle:'green'});
+        var canvas = document.getElementById(id);
+        var series = new TimeSeries();
+        chart.addTimeSeries(series, {lineWidth:0.7,strokeStyle:'green'});
+        chart.streamTo(canvas, 1720);
+        return {"series": series, "chart": chart};
+    };
+
+    var drawIt = function () {
+        currentGraphs.forEach(function (item, idx, thisArray) {
+            var data = item["buffer"].shift();
+            if (typeof data !== 'undefined') {
+                for (var i = data.length - 1; i >= 0; i--) {
+                    item.graph.append(item.startTime, data[i].SIGNAL);
+                    item.startTime += 8;
+                }
+            }
+        });
+    };
+
+    // Stop graphs on click in the options menu
+    $("#graphs").click(function() {
+        var egraph = document.getElementById("graphs");
+        var i = currentGraphs.length-1;
+        if (graphOff === 0) {
+            for (; i >= 0; i--) {
+                currentGraphs[i].chart.stop();
+            }
+            graphOff = 1;
+            egraph.innerHTML = "Turn Graphs ON";
+            alert('Graphs have been turned OFF');
         }
-      }
+        else {
+            for (; i >= 0; i--) {
+                currentGraphs[i].chart.start();
+            }
+            graphOff = 0;
+            egraph.innerHTML = "Turn Graphs OFF";
+            alert('Graphs have been turned ON');
+        }
     });
-  };
 
-  eb.onopen = function () {
-    var timer;
-    for (var i = neededGraphs.length - 1; i >= 0; i--) {
-      startGraph(neededGraphs[i][0], neededGraphs[i][1], neededGraphs[i][2]);
+    function get_alert(dat1, dat2, dat3) {
+        console.log('dat1: ' + dat1 + ' dat2: ' + dat2 + ' dat3: ' + dat3);
+        eb.registerHandler(dat1, function(msg) {
+            // temporary to test against debug mode data
+            make_alert(msg);
+            // Test this against live data
+            // array.data.forEach(makeAlert);
+        });
     }
-    clearTimeout(timer);
-    timer = setTimeout(handleResize, 100);
-    setInterval(drawIt, 400);
-  }
+
+    function make_alert(msg) {
+        console.log('in makeAlert');
+        var Alert = {};
+        Alert.alert_msg = msg.alert_msg; //ALERT_MSG;
+        Alert.action_msg = msg.action_msg; //ACTION_MSG;
+        Alert.alert_status = "Active Warning";
+        Alert.alert_time = new Date(msg.ts); //TS);
+        Alert.id = patient_id; //PATIENT_ID;
+        Alert.interval = msg.interval; //INTERVAL;
+        Alert.signame = msg.signame; //SIGNAME;
+
+        // Replace with server info or remove if not needed.
+        $.getJSON('/patients.json', function(data) {
+            Alert.name = data['patients'][(Alert.id)]['name'];
+            Alert.age =  data['patients'][(Alert.id)]['age'];
+            Alert.bed =  data['patients'][(Alert.id)]['bed'];
+            render_alert();
+
+        });
+
+        function render_alert(){
+            console.log('in render_alert');
+            $('#alertPanel').removeClass('panel-success').addClass('panel-danger');
+            $('#alertPanelTitle').text(count_alert() + ' Alerts!');
+            $('#alert_message_row').text('Last Alert Msg: ' + Alert.alert_msg);
+        }
+    }
 }
-var handleResize = function () {
-  for (var i = 0; i < currentGraphs.length; i++) {
-    console.log('resized' + i);
-    var mycanvas = currentGraphs[i].chart.canvas;
-    mycanvas.width = mycanvas.parentNode.offsetWidth;
-    currentGraphs[i].chart.resize();
-  }
+
+// Calls the smoothie.js resize function after assigning the parent's width
+// to the canvas. This matches graph size to it's container for responsiveness.
+// Optional argument:
+// Providing a graphs index number will run resize only on that graph.
+// Omitting the argument will run resize against all currentGraphs.
+var handleResize = function (graph_id) {
+    var mycanvas;
+    if (graph_id === undefined) {
+        currentGraphs.forEach(function(graph){
+            mycanvas = graph.chart.canvas;
+            mycanvas.width = mycanvas.parentNode.offsetWidth;
+            graph.chart.resize();
+        });
+    } else {
+        console.log('in resize graph: ' + graph_id);
+        mycanvas = currentGraphs[graph_id].chart.canvas;
+        mycanvas.width = mycanvas.parentNode.offsetWidth;
+        currentGraphs[graph_id].chart.resize();
+    }
 };
