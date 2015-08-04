@@ -5,7 +5,7 @@ function loadData() {
 }
 
 function loadPatientPanels(id_string) {
-  console.log("Hi, this is the loadPatientPanelFunction");
+  //console.log("Hi, this is the loadPatientPanelFunction");
   //var patient_id = id_string.split("-")[2];
   //loadPatientPanel(patient_id);
   loadPatientPanel(0);
@@ -27,16 +27,19 @@ function loadPatientPanel(id) {
 }
 
 function loadPatient(id) {
+  
+  $.getJSON('http://api.s-pi-demo.com/patients/'+(id+1), function(data) {
+    $( ".name-text").html(data["name"]);
+    $( "#age").html(data["age"]);
+    $( "#bed").html(data["bed"]);
+    $( "#status").html(data["status"]);
+  });
+    
   $.getJSON('/patients.json', function(data) {
     patient_data = data['patients'][id];
-    $( ".name-text").html(patient_data["name"]);
-    $( "#age").html(patient_data["age"]);
-    $( "#bed").html(patient_data["bed"]);
-    $( "#status").html(patient_data["status"]);
     $( "div#dataModal .modal-body" ).html(patient_data['clinical-data']['html']);
     $( "div#labsModal .modal-body" ).html(patient_data['labs-data']['html']);
     $( "div#medsModal .modal-body" ).html(patient_data['meds-data']['html']);
     $( "div#progressModal .modal-body" ).html(patient_data['progress-data']['html']);
-  
   } );
 }
