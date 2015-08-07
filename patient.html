@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="./bower_components/react/react.js"></script>
-    <script src="./bower_components/react/JSXTransformer.js"></script>
     <script src="./bower_components/jquery/dist/jquery.min.js"></script>
     <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="./bower_components/react-bootstrap/react-bootstrap.min.js"></script>
     <script src="./bower_components/smoothie/smoothie.js"></script>
     <script src="./bower_components/sockjs/sockjs.js"></script>
-    <script src="./smoothie_graphs/vertxbus.js"></script>
-    <script src="./smoothie_graphs/patient_graphs.js"></script>
-    <script src="./s-pi.js"></script>
+    <script src="./bower_components/vertxbus/vertxbus.js"></script>
+    <script src="./public/js/patient_graphs.js"></script>
+    <script src="./public/js/s-pi.js"></script>
     <script>
       window.addEventListener("load", loadData);
       window.addEventListener("hashchange", loadData);
     </script>
     <link href="./bower_components/bootstrap-theme-cosmo/cosmo.min.css" rel="stylesheet">
-    <link href="./bower_components/patient.css" rel="stylesheet">
-    <link href="./smoothie_graphs/patient_graphs.css" rel="stylesheet">
+    <link href="./public/css/patient.css" rel="stylesheet">
+    <link href="./public/css/patient_graphs.css" rel="stylesheet">
     <title>S-Pi Patient View</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
