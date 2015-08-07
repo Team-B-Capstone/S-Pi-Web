@@ -57,10 +57,20 @@ $("#graphs").click(function() {
 
   var makeSmoothie = function (id) {
     console.log("id" + id)
-    var chart = new SmoothieChart({millisPerPixel:8, strokeStyle:'green'});
+    if (id == "chart1") {
+        color = "red";
+    } else if (id == "chart2") {
+        color = "green";
+    } else if (id == "chart3") {
+        color = "blue";
+    } else {
+        color = "yellow";
+    }
+
+    var chart = new SmoothieChart({millisPerPixel:8, strokeStyle:color});
     var canvas = document.getElementById(id);
     var series = new TimeSeries();
-    chart.addTimeSeries(series, {lineWidth:0.7,strokeStyle:'green'});
+    chart.addTimeSeries(series, {lineWidth:0.7,strokeStyle:color});
     chart.streamTo(canvas, 1720);
     return {"series": series, "chart": chart};
   };
