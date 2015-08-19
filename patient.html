@@ -15,6 +15,16 @@
       window.addEventListener("load", loadData);
       window.addEventListener("hashchange", loadData);
     </script>
+    <script type="text/javascript">
+        jQuery(function($) {
+            setTimeout(function() {
+              updateAlertPanel(true);
+            }, 4000);
+            setTimeout(function() {
+              updateAlertPanel(false);
+            }, 8000);
+        });
+    </script>
     <link href="./bower_components/bootstrap-theme-cosmo/cosmo.min.css" rel="stylesheet">
     <link href="./bower_components/patient.css" rel="stylesheet">
     <link href="./smoothie_graphs/patient_graphs.css" rel="stylesheet">

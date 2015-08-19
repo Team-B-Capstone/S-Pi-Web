@@ -1,3 +1,11 @@
+function updateAlertPanel(is_alert) {
+  if (is_alert) {
+    $("#infoArea .info-panel").removeClass("panel-success").addClass("panel-danger");
+  }
+  else {
+    $("#infoArea .info-panel").removeClass("panel-danger").addClass("panel-success");
+  }
+}
 
 function loadData() {
   id = window.location.hash.substring(1);
